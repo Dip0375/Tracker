@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - IP Tracker</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body class="auth-body">
+    <div class="auth-container">
+        <div class="auth-card" style="animation: slideInUp 0.6s ease-out; margin: 20px auto;">
+            <div class="auth-header">
+                <div class="logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>IP Tracker</span>
+                </div>
+                <h1>Create Account</h1>
+                <p>Join our security platform</p>
+            </div>
+
+            <form id="signup-form" class="auth-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="first-name">First Name</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="first-name" name="firstName" placeholder="First name" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="last-name">Last Name</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="last-name" name="lastName" placeholder="Last name" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="organization">Organization</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-building"></i>
+                        <input type="text" id="organization" name="organization" placeholder="Company/Organization">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" name="password" placeholder="Create a strong password" required>
+                        <button type="button" class="password-toggle" id="password-toggle">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Password Strength Indicator -->
+                    <div class="password-strength" id="password-strength">
+                        <div class="strength-bar">
+                            <div class="strength-fill" id="strength-fill"></div>
+                        </div>
+                        <div class="strength-text" id="strength-text">Password strength</div>
+                    </div>
+
+                    <!-- Password Requirements -->
+                    <div class="password-requirements">
+                        <div class="requirement" id="req-length">
+                            <i class="fas fa-times"></i>
+                            <span>At least 12 characters</span>
+                        </div>
+                        <div class="requirement" id="req-uppercase">
+                            <i class="fas fa-times"></i>
+                            <span>One uppercase letter</span>
+                        </div>
+                        <div class="requirement" id="req-lowercase">
+                            <i class="fas fa-times"></i>
+                            <span>One lowercase letter</span>
+                        </div>
+                        <div class="requirement" id="req-number">
+                            <i class="fas fa-times"></i>
+                            <span>One number</span>
+                        </div>
+                        <div class="requirement" id="req-special">
+                            <i class="fas fa-times"></i>
+                            <span>One special character (!@#$%^&*)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="confirm-password" name="confirmPassword" placeholder="Confirm your password" required>
+                        <button type="button" class="password-toggle" id="confirm-password-toggle">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-match" id="password-match"></div>
+                </div>
+
+                <!-- Math Verification Section -->
+                <div class="math-verification" style="animation: fadeIn 0.8s ease-in 0.3s both;">
+                    <div class="math-question">
+                        <label>Security Verification</label>
+                        <div class="math-display" id="math-display">
+                            <span id="math-question"></span>
+                            <button type="button" class="math-refresh" id="math-refresh">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                        <div class="input-wrapper">
+                            <i class="fas fa-calculator"></i>
+                            <input type="number" id="math-answer" placeholder="Enter answer" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terms and Privacy -->
+                <div class="terms-section">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" id="terms-agreement" required>
+                        <span class="checkmark"></span>
+                        I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="auth-btn" id="signup-btn" disabled>
+                    <span>Create Account</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="signin.html">Sign in here</a></p>
+                </div>
+            </form>
+        </div>
+
+        <div class="auth-background">
+            <div class="security-icons" style="animation: float 6s ease-in-out infinite;">
+                <i class="fas fa-shield-alt" style="animation: bounce 2s infinite;"></i>
+                <i class="fas fa-lock" style="animation: pulse 2s infinite;"></i>
+                <i class="fas fa-eye" style="animation: bounce 2s infinite 0.2s;"></i>
+                <i class="fas fa-globe" style="animation: pulse 2s infinite 0.4s;"></i>
+                <i class="fas fa-server" style="animation: bounce 2s infinite 0.6s;"></i>
+                <i class="fas fa-network-wired" style="animation: pulse 2s infinite 0.8s;"></i>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes slideInUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .auth-container {
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+        .math-verification {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+        .math-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .math-refresh {
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 5px;
+        }
+        .form-group { animation: fadeIn 0.6s ease-out; }
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.2s; }
+        .form-group:nth-child(3) { animation-delay: 0.3s; }
+        .form-group:nth-child(4) { animation-delay: 0.4s; }
+        .form-group:nth-child(5) { animation-delay: 0.5s; }
+        
+        /* Password Requirements Colors */
+        .requirement { color: #dc2626; }
+        .requirement.met { color: #16a34a; }
+        
+        /* Password Strength Bar Colors */
+        .strength-fill.weak { background-color: #dc2626; }
+        .strength-fill.medium { background-color: #eab308; }
+        .strength-fill.strong { background-color: #16a34a; }
+        .strength-fill.very-strong { background-color: #2563eb; }
+        
+        /* Password Match Colors */
+        .password-match {
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .password-match.success {
+            background-color: #dcfce7;
+            color: #16a34a;
+            border: 1px solid #16a34a;
+        }
+        .password-match.error {
+            background-color: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #dc2626;
+        }
+        
+        /* Password Toggle Button Positioning */
+        .input-wrapper {
+            position: relative;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 4px;
+            z-index: 10;
+        }
+        .password-toggle:hover {
+            color: #374151;
+        }
+    </style>
+    <script>
+        let mathAnswer = 0;
+        
+        function generateMathQuestion() {
+            const operations = ['+', '-', '*'];
+            const op = operations[Math.floor(Math.random() * operations.length)];
+            let num1, num2;
+            
+            if (op === '*') {
+                num1 = Math.floor(Math.random() * 12) + 1;
+                num2 = Math.floor(Math.random() * 12) + 1;
+            } else {
+                num1 = Math.floor(Math.random() * 50) + 1;
+                num2 = Math.floor(Math.random() * 50) + 1;
+            }
+            
+            if (op === '-' && num1 < num2) [num1, num2] = [num2, num1];
+            
+            mathAnswer = op === '+' ? num1 + num2 : op === '-' ? num1 - num2 : num1 * num2;
+            document.getElementById('math-question').textContent = `${num1} ${op} ${num2} = ?`;
+        }
+        
+        function checkPasswordStrength(password) {
+            const requirements = {
+                length: password.length >= 12,
+                uppercase: /[A-Z]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                number: /\d/.test(password),
+                special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+            };
+            
+            const score = Object.values(requirements).filter(Boolean).length;
+            const strengthFill = document.getElementById('strength-fill');
+            const strengthText = document.getElementById('strength-text');
+            
+            strengthFill.style.width = (score * 20) + '%';
+            
+            if (score === 0) {
+                strengthFill.className = 'strength-fill';
+                strengthText.textContent = 'Password strength';
+            } else if (score <= 2) {
+                strengthFill.className = 'strength-fill weak';
+                strengthText.textContent = 'Weak';
+            } else if (score <= 3) {
+                strengthFill.className = 'strength-fill medium';
+                strengthText.textContent = 'Medium';
+            } else if (score <= 4) {
+                strengthFill.className = 'strength-fill strong';
+                strengthText.textContent = 'Strong';
+            } else {
+                strengthFill.className = 'strength-fill very-strong';
+                strengthText.textContent = 'Very Strong';
+            }
+            
+            // Update requirement indicators
+            Object.keys(requirements).forEach(req => {
+                const element = document.getElementById(`req-${req}`);
+                const icon = element.querySelector('i');
+                if (requirements[req]) {
+                    element.classList.add('met');
+                    icon.className = 'fas fa-check';
+                } else {
+                    element.classList.remove('met');
+                    icon.className = 'fas fa-times';
+                }
+            });
+            
+            return score === 5;
+        }
+        
+        function checkPasswordMatch() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const matchElement = document.getElementById('password-match');
+            
+            if (confirmPassword === '') {
+                matchElement.textContent = '';
+                return false;
+            }
+            
+            if (password === confirmPassword) {
+                matchElement.textContent = 'Passwords match';
+                matchElement.className = 'password-match success';
+                return true;
+            } else {
+                matchElement.textContent = 'Passwords do not match';
+                matchElement.className = 'password-match error';
+                return false;
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            generateMathQuestion();
+            
+            // Math verification
+            document.getElementById('math-refresh').addEventListener('click', generateMathQuestion);
+            
+            // Password strength checker
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirm-password');
+            
+            passwordInput.addEventListener('input', function() {
+                checkPasswordStrength(this.value);
+                checkPasswordMatch();
+            });
+            
+            confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+            
+            // Password toggle
+            document.getElementById('password-toggle').addEventListener('click', function() {
+                const type = passwordInput.type === 'password' ? 'text' : 'password';
+                passwordInput.type = type;
+                this.querySelector('i').className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+            });
+            
+            document.getElementById('confirm-password-toggle').addEventListener('click', function() {
+                const type = confirmPasswordInput.type === 'password' ? 'text' : 'password';
+                confirmPasswordInput.type = type;
+                this.querySelector('i').className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+            });
+            
+            // Form submission
+            document.getElementById('signup-form').addEventListener('submit', function(e) {
+                const userAnswer = parseInt(document.getElementById('math-answer').value);
+                if (userAnswer !== mathAnswer) {
+                    e.preventDefault();
+                    alert('Incorrect math answer. Please try again.');
+                    generateMathQuestion();
+                    document.getElementById('math-answer').value = '';
+                    return;
+                }
+                
+                if (!checkPasswordStrength(passwordInput.value)) {
+                    e.preventDefault();
+                    alert('Please ensure your password meets all requirements.');
+                    return;
+                }
+                
+                if (!checkPasswordMatch()) {
+                    e.preventDefault();
+                    alert('Passwords do not match.');
+                    return;
+                }
+            });
+        });
+    </script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

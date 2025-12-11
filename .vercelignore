@@ -1,0 +1,9 @@
+backend/
+database/
+docs/
+*.md
+.env*
+setup.bat
+setup.sh
+node_modules/
+.git/
